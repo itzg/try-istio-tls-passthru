@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openssl-server
+  labels:
+    app: openssl-server
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: openssl-server
+      labels:
+        app: openssl-server
+    spec:
+      containers:
+        - name: main
+          image: itzg/openssl-ubuntu
+          imagePullPolicy: IfNotPresent
+          args:
+            - s_server
+            - -CAfile
+            - ca_cert.pem
+            - -cert
+            - server_cert.pem
+            - -key
+            - server_key.pem
+            - -www
+          workingDir: /certs
+          volumeMounts:
+            - mountPath: /certs
+              name: certs
+          ports:
+            - containerPort: 4433
+      restartPolicy: Always
+      volumes:
+        - name: certs
+          configMap:
+            name: openssl-server-certs
+  selector:
+    matchLabels:
+      app: openssl-server

@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: openssl-vs
+spec:
+  hosts:
+    - "openssl.example.com"
+  gateways:
+    - openssl-gw
+  tls:
+    - match:
+        - port: 443
+          sni_hosts:
+            - openssl.example.com
+      route:
+        - destination:
+            host: openssl-svc.default.svc.cluster.local
+            port:
+              number: 443

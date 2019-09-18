@@ -1,0 +1,9 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: openssl-dr
+spec:
+  host: openssl-svc.default.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: DISABLE

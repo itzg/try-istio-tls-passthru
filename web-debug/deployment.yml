@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-debug
+  labels:
+    app: web-debug
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: web-debug
+      labels:
+        app: web-debug
+    spec:
+      containers:
+        - name: main
+          image: itzg/web-debug-server
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: web-debug
